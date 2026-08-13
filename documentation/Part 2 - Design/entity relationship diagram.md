@@ -1,0 +1,1 @@
+/home/junnaaa/school-12/ATAR12/CS/Task 6 Database/Part 2 - Design/entity relationship diagram.md
