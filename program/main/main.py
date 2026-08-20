@@ -62,3 +62,5 @@ def main():
                 customer_choice = input("Invalid input, please re-enter your option: ")
             if customer_choice == "1":
                 validity = False
+                while not validity:
+                    pass
