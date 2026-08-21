@@ -35,9 +35,33 @@ def db_load():
 
 def customer_menu(email, password, table, new):
 
+    valid = True
     if new:
-        print(table)
-        return False
+        if "@" not in email:
+            print("Your email is not correctly formatted")
+            valid = False
+        if len(password) < 8:
+            print("password is too short, must be 8 characters or longer")
+            valid = False
+        for i in table:
+            if i[3] == email:
+                print("Email exists, please use a different one.")
+                valid = False
+        return valid
+    else:
+        valid = False
+        for i in table:
+            if i[3] == email:
+                if i[4] == password:
+                    valid = True
+        if valid:
+            print("login successful good job goy")
+        else:
+            print("email or password incorrect")
+            return False
+    pass
+        
+
 
 
 def employee_menu(user, password):
@@ -55,23 +79,38 @@ def main():
     db_tables = db_load()
     while True:
         menu_type = input(
-            "Welcome to Greener Days Law Care Digital interface. If you are a customer, enter  1, if you are an employee, enter 2, if admin, enter 3:"
+            "Welcome to Greener Days Law Care Digital interface. If you are a customer, enter  1, if you are an employee, enter 2, if admin, enter 3. Enter 4 to exit:"
         )
         if menu_type == "1":
             customer_choice = input(
-                "Enter 1 if you are not an existing customer, otherwise enter 2"
+                "Enter 1 if you are not an existing customer, otherwise enter 2: "
             )
             while customer_choice not in ["1", "2"]:
                 customer_choice = input("Invalid input, please re-enter your option: ")
             if customer_choice == "1":
                 validity = False
-                print(db_tables)
                 while not validity:
                     email = input("Enter your email: ")
                     password = input("Enter your password: ")
                     validity = customer_menu(
                         email, password, db_tables["Customer"], True
                     )
-
+            elif customer_choice == "2":
+                validity = False
+                while not validity:
+                    email = input("Enter your email: ")
+                    password = input("Enter your password: ")
+                    validity = customer_menu(
+                        email, password, db_tables["Customer"], False
+                    )
+        elif menu_type == "2":
+            pass
+        elif menu_type == "3": 
+            pass
+        elif menu_type == "4":
+            print("Thanks for using this service. Goodbye now")
+            return
+        else:
+            print("Invalid input")
 
 main()
