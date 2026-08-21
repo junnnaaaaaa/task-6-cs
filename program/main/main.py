@@ -19,7 +19,7 @@ def db_load():
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     for table in table_names:
-        cursor.execute("SELECT * FROM {table}")
+        cursor.execute(f'SELECT * FROM "{table}"')
 
         headers = [description[0] for description in cursor.description]
 
@@ -28,13 +28,16 @@ def db_load():
 
         # Combine headers and rows into a 2D list matrix
         matrix_2d = [headers] + [list(row) for row in rows]
-        tables_data = matrix_2d
-        conn.close()
+        tables_data[table] = matrix_2d
+    conn.close()
     return tables_data
 
 
-def customer_menu(user, password, table):
-    pass
+def customer_menu(email, password, table, new):
+
+    if new:
+        print(table)
+        return False
 
 
 def employee_menu(user, password):
@@ -62,5 +65,13 @@ def main():
                 customer_choice = input("Invalid input, please re-enter your option: ")
             if customer_choice == "1":
                 validity = False
+                print(db_tables)
                 while not validity:
-                    pass
+                    email = input("Enter your email: ")
+                    password = input("Enter your password: ")
+                    validity = customer_menu(
+                        email, password, db_tables["Customer"], True
+                    )
+
+
+main()
